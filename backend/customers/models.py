@@ -7,9 +7,9 @@ class Customers(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     age = models.IntegerField(blank=True, null=True)
-    phone_number = models.CharField(max_length=15)
+    phone_number = models.CharField(max_length=15, unique=True)
     monthly_salary = models.DecimalField(max_digits=10, decimal_places=2)
-    approved_limit = models.DecimalField(max_digits=10, decimal_places=2)
+    approved_limit = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
 
     def __str__(self):
