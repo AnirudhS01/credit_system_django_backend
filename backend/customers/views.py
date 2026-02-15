@@ -20,6 +20,7 @@ class RegisterCustomer(APIView):
             return Response({
                 "message": "Customer registered successfully",
                 "data": {
+                    "customer_id": serializer.instance.id,
                     "first_name": serializer.validated_data.get('first_name'),
                     "last_name": serializer.validated_data.get('last_name'),
                     "age": serializer.validated_data.get('age'),
