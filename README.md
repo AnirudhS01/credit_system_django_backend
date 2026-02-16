@@ -18,13 +18,15 @@ credit_system/
 │   │   ├── serializers.py# DRF serializers
 │   │   ├── services.py   # Business logic (Ingestion)
 │   │   ├── views.py      # API views
-│   │   └── urls.py       # App-specific URL routing
+│   │   ├── urls.py       # App-specific URL routing
+│   │   └── test/         # Unit tests
 │   ├── loan/             # Loan management app
 │   │   ├── models.py     # Loan database models
 │   │   ├── serializers.py# DRF serializers
 │   │   ├── services.py   # Business logic (Credit scoring)
 │   │   ├── views.py      # API views
-│   │   └── urls.py       # App-specific URL routing
+│   │   ├── urls.py       # App-specific URL routing
+│   │   └── test/         # Unit tests
 │   └── manage.py         # Django management script
 ├── data/                 # Data ingestion source files
 │   ├── customer_data.xlsx
@@ -193,4 +195,39 @@ The API will be accessible at `http://localhost:8000`.
     python manage.py runserver
     ```
     The API will be accessible at `http://127.0.0.1:8000`.
+
+---
+
+## Testing
+
+## Testing
+
+Unit tests for each API endpoint have been implemented using `pytest` and `django.test`. These tests ensure the reliability of the business logic and API contracts.
+
+### Test Coverage
+
+*   **Customer Registration** (`/register`):
+    *   Verifies successful customer creation with valid payload.
+    *   Checks correct persistence of personal and financial data.
+    *   Ensures `approved_limit` is correctly calculated upon registration.
+
+*   **Loan Eligibility** (`/api/check-eligibility/`):
+    *   **Approved Flow**: Validates that a creditworthy customer (high income/limit) receives an approval with corrected interest rate and EMI details.
+    *   **Rejection Flow**: Ensures appropriate response structures when eligibility criteria (e.g., loan amount > limit) are not met.
+
+*   **Loan Creation** (`/api/create-loan/`):
+    *   **Success**: Confirms that a loan is successfully created and persisted in the database for eligible requests, returning a valid `loan_id`.
+    *   **Error Handling**: Verifies 404 response when attempting to create a loan for a non-existent customer.
+
+*   **View Loan Actions**:
+    *   **Single Loan** (`/api/view-loan/<loan_id>`): Tests retrieval of specific loan details, including customer and repayment info. Verifies 404 for invalid loan IDs.
+    *   **Customer Loans** (`/api/view-loans/<customer_id>`): Validates retrieval of all loans associated with a customer. effectively handling cases with multiple loans or zero active loans.
+
+### Running Tests in Docker
+
+To run the complete test suite inside the running Docker container, execute:
+
+```bash
+docker exec -it django-container pytest
+```
 
