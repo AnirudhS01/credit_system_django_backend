@@ -55,13 +55,6 @@ def test_check_eligibility_rejected_high_amount():
 
     response = client.post("/api/check-eligibility/", payload, format="json")
     
-    # Ideally, even if rejected, the API might return 200 with approval: False
-    # Based on views.py, it calls 'eligibility' service. 
-    # Current codebase suggests it returns a response with details either way.
-    
     assert response.status_code == 200
-    # Note: Exact approval logic depends on credit score calc which is internal, 
-    # but high loan/limit ratio usually degrades score.
-    # We assert mostly on structure here.
     assert response.data["customer_id"] == customer.id
     assert "approval" in response.data
