@@ -1,0 +1,38 @@
+
+services:
+  backend:
+    build: .
+    container_name: django-container
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    command: python backend/manage.py runserver 0.0.0.0:8000
+
+  worker:
+    build: .
+    container_name: django-worker
+    env_file:
+      - .env
+    depends_on:
+      - db
+    command: >
+      sh -c "
+      sleep 10 &&
+      python backend/manage.py migrate &&
+      python backend/manage.py ingest_data &&
+      python backend/manage.py ingest_loan
+      "
+
+  db:
+    image: postgres:16
+    container_name: postgres-container
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
