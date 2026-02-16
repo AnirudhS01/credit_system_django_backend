@@ -18,13 +18,15 @@ credit_system/
 │   │   ├── serializers.py# DRF serializers
 │   │   ├── services.py   # Business logic (Ingestion)
 │   │   ├── views.py      # API views
-│   │   └── urls.py       # App-specific URL routing
+│   │   ├── urls.py       # App-specific URL routing
+│   │   └── test/         # Unit tests
 │   ├── loan/             # Loan management app
 │   │   ├── models.py     # Loan database models
 │   │   ├── serializers.py# DRF serializers
 │   │   ├── services.py   # Business logic (Credit scoring)
 │   │   ├── views.py      # API views
-│   │   └── urls.py       # App-specific URL routing
+│   │   ├── urls.py       # App-specific URL routing
+│   │   └── test/         # Unit tests
 │   └── manage.py         # Django management script
 ├── data/                 # Data ingestion source files
 │   ├── customer_data.xlsx
