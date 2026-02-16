@@ -98,3 +98,35 @@ class CreateLoan(APIView):
             "monthly_installment": monthly_installment,
 
         }, status=status.HTTP_201_CREATED)
+
+
+class ViewLoanbyId(APIView):
+
+    def get(self, request, loan_id):
+        try:
+            loan = Loan.objects.get(id=loan_id)
+        except Loan.DoesNotExist:
+            return Response(
+                {"error": "Loan not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        customer = loan.customer
+
+        return Response(
+            {
+                "loan_id": loan.id,
+                "customer": {
+                    "id": customer.id,
+                    "first_name": customer.first_name,
+                    "last_name": customer.last_name,
+                    "phone_number": customer.phone_number,
+                    "age": customer.age,
+                },
+                "loan_amount": loan.loan_amount,
+                "interest_rate": loan.interest_rate,
+                "monthly_installment": loan.monthly_payment,
+                "tenure": loan.tenure,
+            },
+            status=status.HTTP_200_OK,
+        )
