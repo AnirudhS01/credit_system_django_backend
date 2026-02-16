@@ -130,3 +130,40 @@ class ViewLoanbyId(APIView):
             },
             status=status.HTTP_200_OK,
         )
+
+class ViewLoansByCustomer(APIView):
+
+    def get(self, request, customer_id):
+        try:
+            customer = Customers.objects.get(id=customer_id)
+        except Customers.DoesNotExist:
+            return Response(
+                {"error": "Customer not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        today = now().date()
+
+        active_loans = customer.loans.filter(end_date__gte=today)
+
+        response_data = []
+
+        for loan in active_loans:
+            months_passed = (
+                (today.year - loan.start_date.year) * 12
+                + (today.month - loan.start_date.month)
+            )
+
+            repayments_left = loan.tenure - months_passed
+            if repayments_left < 0:
+                repayments_left = 0
+
+            response_data.append({
+                "loan_id": loan.id,
+                "loan_amount": loan.loan_amount,
+                "interest_rate": loan.interest_rate,
+                "monthly_installment": loan.monthly_payment,
+                "repayments_left": repayments_left,
+            })
+
+        return Response(response_data, status=status.HTTP_200_OK)
