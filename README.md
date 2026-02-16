@@ -1,6 +1,6 @@
-# Credit Approval System
+# Loan Approval System
 
-This repository contains the backend implementation for a Credit Approval System. The system manages customer data, loan applications, and automated credit eligibility assessments based on historical financial data. It is built using Django and Django Rest Framework (DRF), with PostgreSQL as the persistence layer.
+This repository contains the backend implementation for a Loan Approval System. The system manages customer data, loan applications, and automated credit eligibility assessments based on historical financial data. It is built using Django and Django Rest Framework (DRF), with PostgreSQL as the persistence layer.
 
 ---
 
@@ -164,7 +164,7 @@ python manage.py ingest_loan
 *   Python 3.8 or higher
 *   Docker & Docker Compose (optional, recommended for production-like environments)
 
-### Method 1: Docker Compose (Recommended)
+### Method 1: Docker Compose
 Build and deploy the application container stack. This includes the application server, PostgreSQL database, and the data ingestion worker.
 
 ```bash
